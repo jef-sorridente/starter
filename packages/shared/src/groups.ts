@@ -22,7 +22,7 @@ export const groupInviteRoleSchema = z.enum(["ADMIN", "MEMBER"]);
 export type GroupInviteRole = z.infer<typeof groupInviteRoleSchema>;
 
 export const createInviteSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   role: groupInviteRoleSchema.default("MEMBER"),
 });
 export type CreateInviteInput = z.infer<typeof createInviteSchema>;

@@ -19,7 +19,7 @@ Monorepo pnpm workspaces + Turborepo, Node 24 LTS (`.nvmrc`).
 - `apps/api` — NestJS 10 + Prisma 5 + PostgreSQL 16. Regra de negócio mora
   no código da API (service), nunca em trigger de banco nem no front.
   Log estruturado com pino (`nestjs-pino`), health check em `GET /health`.
-- `apps/web` — Next.js 14 (App Router), React Query, design system próprio.
+- `apps/web` — Next.js 15 (App Router) + React 19, React Query, design system próprio.
 - `apps/e2e` — Playwright contra API + web de verdade (banco de teste).
 - `packages/shared` — schemas zod + tipos, usados pela API (validação de
   verdade) e pelo web (validação de formulário). Regra de validação só aqui.
@@ -63,6 +63,9 @@ Padrões completos em `docs/padroes/`, decisões e seus porquês em
 - **Skills**: `novo-modulo`, `nova-tela`, `componente-ds`,
   `revisao-qualidade`, `iniciar-projeto` (em `.claude/skills`). Use-as —
   são o jeito do repositório de fazer essas tarefas.
+- **Testes no navegador sempre contra o build de produção** (`pnpm
+test:e2e:web:build` antes de `pnpm test:e2e:web`) — o `next dev` já
+  escondeu bug real.
 - Todo arquivo editado pelo Claude passa por Prettier + ESLint no hook
   `.claude/hooks/after-edit.mjs`; erro de lint volta como feedback.
 

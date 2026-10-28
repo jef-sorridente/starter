@@ -26,6 +26,11 @@ describe("schemas compartilhados", () => {
     });
   });
 
+  it("editar só o título não apaga o conteúdo (PATCH parcial não aplica default)", () => {
+    expect(updateNoteSchema.parse({ title: "Novo título" })).toEqual({ title: "Novo título" });
+    expect(updateNoteSchema.parse({})).toEqual({});
+  });
+
   it("filtro de notificações converte unreadOnly de string pra boolean", () => {
     expect(notificationsQuerySchema.parse({ unreadOnly: "true" }).unreadOnly).toBe(true);
     expect(notificationsQuerySchema.parse({}).unreadOnly).toBe(false);

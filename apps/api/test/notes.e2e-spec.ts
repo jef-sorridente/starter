@@ -34,6 +34,8 @@ describe("Anotações (e2e)", () => {
         .send({ title: "Ideia 2" });
       expect(updated.status).toBe(200);
       expect(updated.body.title).toBe("Ideia 2");
+      // PATCH parcial não pode apagar o que não foi enviado (regressão do zod 4).
+      expect(updated.body.content).toBe("texto");
 
       const del = await t.http().delete(`/notes/${created.body.id}`).set("Authorization", t.auth(ana));
       expect(del.status).toBe(204);

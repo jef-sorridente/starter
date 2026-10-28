@@ -11,8 +11,8 @@ export function nextConfig({ tsconfigRootDir }) {
   return [
     ...reactConfig({ tsconfigRootDir }),
     {
-      // O plugin do Next 14 foi escrito pra ESLint 8 — fixupPluginRules
-      // adapta as APIs de contexto que mudaram no ESLint 9.
+      // fixupPluginRules: proteção barata caso alguma regra do plugin ainda
+      // use API de contexto do ESLint 8 (removida no 9).
       plugins: { "@next/next": fixupPluginRules(nextPlugin) },
       rules: {
         ...nextPlugin.configs.recommended.rules,

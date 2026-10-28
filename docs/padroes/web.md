@@ -50,6 +50,12 @@
   renove com refresh token já rotacionado pela outra (o que o backend trata
   como roubo e derruba todas as sessões).
 - User-agent de iPhone contém "like Mac OS X" — checar iOS antes de macOS.
+- `AnimatePresence mode="wait"` em volta das páginas do App Router: a
+  página nova aparece dentro do envelope que está saindo e é montada de
+  novo quando a saída termina — perde o que o usuário digitou. Por isso o
+  `PageTransition` só anima a entrada. Só apareceu no build de produção.
+- Teste no navegador que roda em `next dev` esconde corrida de tempo (a
+  compilação lenta "espera" pelo app). Rode sempre contra `next start`.
 
 ## Estilo
 
