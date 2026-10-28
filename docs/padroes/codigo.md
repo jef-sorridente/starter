@@ -20,6 +20,13 @@ no pre-commit, no hook do Claude Code e no CI (`pnpm format:check`).
   for de propósito "dispara e esquece" (`no-floating-promises`).
 - Tipo de resposta da API vem de `@app/shared`, nunca redeclarado no web.
 
+## zod
+
+- Schema de edição (PATCH) é declarado à parte, com campos `.optional()`
+  sem `.default()`. No zod 4, `createSchema.partial()` mantém os defaults
+  — um PATCH que só manda o título zeraria o conteúdo. Coberto em
+  `packages/shared/src/schemas.test.ts` e no e2e de anotações.
+
 ## Nomes e idioma
 
 - Código em inglês (variáveis, funções, arquivos); domínio que é termo de

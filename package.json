@@ -26,12 +26,14 @@
     "db:generate": "pnpm --filter api run prisma:generate",
     "db:migrate": "pnpm --filter api run prisma:migrate",
     "rename-project": "node scripts/rename-project.mjs",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:e2e:web:build": "cross-env NEXT_PUBLIC_API_URL=http://localhost:3101 turbo run build --filter=web --filter=api"
   },
   "devDependencies": {
     "@app/config": "workspace:*",
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
+    "cross-env": "^10.1.0",
     "dependency-cruiser": "^18.7.0",
     "eslint": "^9.39.0",
     "husky": "^9.1.7",

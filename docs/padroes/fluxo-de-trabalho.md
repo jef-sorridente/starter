@@ -49,16 +49,39 @@ garantia é o CI.
 
 ## Ligar a proteção da `main` (uma vez por repositório)
 
-GitHub → Settings → Branches → Add rule para `main`:
+**Plano do GitHub:** em repositório **privado** de conta gratuita, a
+proteção de branch não é aplicada e o CodeQL (code scanning) não roda —
+precisa de GitHub Pro (conta pessoal) ou Team (organização). Repositório
+público funciona no plano gratuito. Sem plano pago e privado: remova
+`.github/workflows/codeql.yml` (senão o job falha sempre) e siga a
+disciplina de PR sem a trava.
 
-- Require a pull request before merging
-- Require status checks to pass: `quality`, `unit`, `api-e2e`, `web-e2e`,
-  `design-system`, `analyze` (CodeQL), `conventional` (título)
-- Require branches to be up to date before merging
-- Do not allow bypassing the above settings
-- Settings → General → Pull Requests: permitir só **Squash merging**
+**Antes de configurar:** faça um push e espere o CI rodar uma vez — o
+GitHub só lista como "status check" os jobs que já rodaram.
 
-Com isso, o CI deixa de ser sugestão e vira porteiro.
+1. Settings → General → Pull Requests: marque só **Allow squash merging**
+   e marque **Automatically delete head branches**.
+2. Settings → Rules → Rulesets → New ruleset → **New branch ruleset**:
+   - Ruleset name: `main`; Enforcement status: **Active**
+   - Target branches → Add target → **Include default branch**
+   - Marque **Restrict deletions** e **Block force pushes**
+   - Marque **Require a pull request before merging** (em projeto solo,
+     "Required approvals" = 0 — o porteiro é o CI)
+   - Marque **Require status checks to pass** → **Require branches to be
+     up to date before merging** → Add checks, adicionando:
+     - `Qualidade (format, lint, tipos, arquitetura, build)`
+     - `Testes unitários + cobertura`
+     - `API — integração (banco real)`
+     - `Ponta a ponta no navegador (Playwright)`
+     - `Design system (Storybook + acessibilidade + visual)`
+     - `analyze` (CodeQL — só se o plano permitir)
+     - `conventional` (título do PR — aparece depois do primeiro PR)
+   - Bypass list: deixe **vazia** (nem o dono pula o CI)
+   - Create
+
+Com isso, o CI deixa de ser sugestão e vira porteiro. (A tela antiga,
+Settings → Branches → "Add classic branch protection rule", também
+funciona com as mesmas opções.)
 
 ## Revisão
 

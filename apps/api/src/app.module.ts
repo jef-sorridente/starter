@@ -21,12 +21,13 @@ import { NotesModule } from "./notes/notes.module";
   imports: [
     ConfigModule.forRoot({ isGlobal: true, validate: validateEnv }),
     LoggerModule.forRoot(buildLoggerOptions()),
-    ThrottlerModule.forRoot([
-      {
-        ttl: 60_000,
-        limit: 100,
-      },
-    ]),
+    ThrottlerModule.forRoot({
+      throttlers: [{ ttl: 60_000, limit: 100 }],
+      // Lido a cada request (não no boot), então um teste consegue ligar
+      // o limite pontualmente pra verificar o 429.
+      skipIf: () => process.env.RATE_LIMIT_ENABLED === "false",
+      errorMessage: "Muitas tentativas. Aguarde um minuto e tente de novo.",
+    }),
     PrismaModule,
     HealthModule,
     AuthModule,

@@ -29,8 +29,9 @@ app uma vez por arquivo, trunca o banco antes de cada `it` e oferece
 `register`, `createGroup`, `addMember`, `auth`, `http`, `prisma`. O teste
 começa sempre de banco vazio e não depende de outro teste.
 
-O rate limit é desligado nos e2e (ver `bootstrap-app.ts` — só sobrescrever
-`ThrottlerGuard.prototype.canActivate` funciona com guard global).
+O rate limit é desligado nos testes por `RATE_LIMIT_ENABLED=false`
+(`.env.test` e config do Playwright) — a validação de ambiente proíbe isso
+em produção. `rate-limit.e2e-spec.ts` religa o limite pra provar o 429.
 
 ## Escrevendo testes no navegador
 

@@ -15,6 +15,9 @@ const envSchema = z
     WEB_URL: z.string().min(1).default("http://localhost:3000"),
     RESEND_API_KEY: z.string().optional(),
     MAIL_FROM: z.string().optional(),
+    // Só pra testes automatizados (e2e da API e Playwright), que fazem
+    // dezenas de cadastros/logins por minuto. Proibido em produção (abaixo).
+    RATE_LIMIT_ENABLED: z.enum(["true", "false"]).default("true"),
     LOG_LEVEL: z.preprocess(
       (v) => (v === "" ? undefined : v),
       z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).optional(),
@@ -27,9 +30,16 @@ const envSchema = z
     // subir incapaz de mandar esses e-mails sem que ninguém perceba.
     if (env.NODE_ENV === "production" && (!env.RESEND_API_KEY || !env.MAIL_FROM)) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "RESEND_API_KEY e MAIL_FROM são obrigatórios quando NODE_ENV=production",
         path: ["RESEND_API_KEY"],
+      });
+    }
+    if (env.NODE_ENV === "production" && env.RATE_LIMIT_ENABLED === "false") {
+      ctx.addIssue({
+        code: "custom",
+        message: "RATE_LIMIT_ENABLED=false não é permitido em produção",
+        path: ["RATE_LIMIT_ENABLED"],
       });
     }
   });

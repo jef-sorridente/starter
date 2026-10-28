@@ -5,7 +5,20 @@ import { expect, newUser, registerAndVerify, test } from "../fixtures/app";
 // Acessibilidade das telas reais (não só dos componentes isolados no
 // Storybook): o que quebra aqui costuma ser composição — título fora de
 // ordem, botão sem nome, contraste de texto sobre card.
+
+// Mede só depois que as animações de entrada terminam — senão o axe lê o
+// texto no meio do fade-in (opacidade parcial) e acusa contraste baixo que
+// o usuário nunca vê. Animações infinitas (skeleton pulsando) são ignoradas.
+async function waitForAnimations(page: Page) {
+  await page.waitForFunction(() =>
+    document
+      .getAnimations()
+      .every((a) => a.playState !== "running" || a.effect?.getComputedTiming().iterations === Infinity),
+  );
+}
+
 async function expectNoViolations(page: Page) {
+  await waitForAnimations(page);
   const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
   // Mensagem com o seletor e o motivo de cada nó — sem isso, "1 nó com
   // contraste ruim" não diz onde procurar.

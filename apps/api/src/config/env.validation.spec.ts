@@ -25,6 +25,18 @@ describe("validateEnv", () => {
     expect(() => validateEnv({ ...base, NODE_ENV: "production" })).toThrow(/RESEND_API_KEY/);
   });
 
+  it("recusa desligar o rate limit em produção", () => {
+    expect(() =>
+      validateEnv({
+        ...base,
+        NODE_ENV: "production",
+        RESEND_API_KEY: "re_x",
+        MAIL_FROM: "a@b.com",
+        RATE_LIMIT_ENABLED: "false",
+      }),
+    ).toThrow(/RATE_LIMIT_ENABLED/);
+  });
+
   it("aceita produção com RESEND_API_KEY e MAIL_FROM presentes", () => {
     expect(() =>
       validateEnv({ ...base, NODE_ENV: "production", RESEND_API_KEY: "re_x", MAIL_FROM: "a@b.com" }),

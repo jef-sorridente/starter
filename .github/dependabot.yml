@@ -31,5 +31,10 @@ updates:
     directory: /apps/api
     schedule:
       interval: weekly
+    # A imagem acompanha o Node LTS da base (ADR 0008). Versão principal
+    # nova (ex.: 26, que não é LTS) é decisão deliberada, não PR automático.
+    ignore:
+      - dependency-name: node
+        update-types: ["version-update:semver-major"]
     commit-message:
       prefix: chore

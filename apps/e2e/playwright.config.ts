@@ -6,9 +6,11 @@ import { API_URL, DATABASE_URL, WEB_URL } from "./fixtures/env";
 // — `pnpm db:test:up`). Os testes truncam esse banco, então ele nunca
 // pode ser o de desenvolvimento.
 //
-// Local: web em `next dev` (rápido de iterar). CI: `next start` em cima
-// do build de produção — é o que pega bug que só existe no build.
-// Pré-requisito nos dois casos: `pnpm build` (a API sobe de dist/).
+// Sempre contra o build de produção (`next start`), local e no CI —
+// pré-requisito: `NEXT_PUBLIC_API_URL=http://localhost:3101 pnpm build`
+// (ou `pnpm test:e2e:web:build`). Rodar em `next dev` localmente já
+// escondeu bug real: a compilação lenta do dev mascarava uma corrida que
+// só acontece com a página pronta na hora (ver PageTransition).
 const isCI = !!process.env.CI;
 
 export default defineConfig({
@@ -20,9 +22,6 @@ export default defineConfig({
   forbidOnly: isCI,
   retries: isCI ? 1 : 0,
   reporter: isCI ? [["github"], ["html", { open: "never" }]] : [["list"]],
-  // Local roda em `next dev`, que compila cada página no primeiro acesso
-  // — 5s (padrão) estoura à toa. No CI (build de produção) o padrão basta.
-  expect: { timeout: isCI ? 5_000 : 15_000 },
   use: {
     baseURL: WEB_URL,
     ...devices["Desktop Chrome"],
@@ -44,12 +43,14 @@ export default defineConfig({
         JWT_SECRET: "e2e-playwright-secret",
         CORS_ORIGIN: WEB_URL,
         WEB_URL,
+        // Os testes fazem mais cadastros por minuto que o limite anti-força-bruta.
+        RATE_LIMIT_ENABLED: "false",
         RESEND_API_KEY: "",
         MAIL_FROM: "",
       },
     },
     {
-      command: isCI ? "pnpm --filter web exec next start -p 3100" : "pnpm --filter web exec next dev -p 3100",
+      command: "pnpm --filter web exec next start -p 3100",
       url: WEB_URL,
       reuseExistingServer: !isCI,
       timeout: 180_000,

@@ -11,13 +11,13 @@ export const passwordSchema = z
 
 export const registerSchema = z.object({
   name: z.string().trim().min(1),
-  email: z.string().email(),
+  email: z.email(),
   password: passwordSchema,
 });
 export type RegisterInput = z.infer<typeof registerSchema>;
 
 export const loginSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(1),
 });
 export type LoginInput = z.infer<typeof loginSchema>;
@@ -33,7 +33,7 @@ export const verifyEmailSchema = z.object({
 export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;
 
 export const forgotPasswordSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
 });
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 
