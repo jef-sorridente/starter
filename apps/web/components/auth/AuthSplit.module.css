@@ -1,0 +1,69 @@
+.wrap {
+  min-height: 100vh;
+  display: flex;
+}
+
+.sidebar {
+  width: 480px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px;
+  background: var(--surface-panel);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.footer {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 56px 64px;
+}
+
+.reveal {
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Breakpoints: notebook <= 1279px, mobile <= 767px (see AppShellFrame.module.css). */
+
+@media (max-width: 1279px) {
+  .sidebar {
+    width: 360px;
+    padding: 32px;
+  }
+
+  .main {
+    padding: 40px 48px;
+  }
+}
+
+@media (max-width: 767px) {
+  .wrap {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .sidebar {
+    width: auto;
+    padding: 24px 20px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .main {
+    padding: 32px 20px;
+  }
+
+  .reveal {
+    max-width: 100%;
+  }
+}

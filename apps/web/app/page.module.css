@@ -1,0 +1,116 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+}
+
+.sidebar {
+  width: 480px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px;
+  background: var(--surface-panel);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.headline {
+  margin: 12px 0 0;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 56px 64px;
+}
+
+.mainInner {
+  max-width: 400px;
+}
+
+.title {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 32px 0 0;
+}
+
+.featureList {
+  list-style: none;
+  margin: 32px 0 0;
+  padding: 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Breakpoints: notebook <= 1279px, mobile <= 767px (see AppShellFrame.module.css). */
+
+@media (max-width: 1279px) {
+  .sidebar {
+    width: 360px;
+    padding: 32px;
+  }
+
+  .main {
+    padding: 40px 48px;
+  }
+}
+
+@media (max-width: 767px) {
+  .page {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .sidebar {
+    width: auto;
+    padding: 24px 20px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .main {
+    padding: 32px 20px;
+  }
+
+  .mainInner {
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+}

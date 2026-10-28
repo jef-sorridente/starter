@@ -1,0 +1,8 @@
+{
+  "name": "Starter",
+  "short_name": "Starter",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }],
+  "theme_color": "#050B06",
+  "background_color": "#050B06",
+  "display": "standalone"
+}

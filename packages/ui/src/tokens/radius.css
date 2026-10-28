@@ -1,0 +1,10 @@
+:root {
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px; /* fields, badges container, small tiles */
+  --radius-lg: 12px; /* cards, stat cards, icon tiles */
+  --radius-xl: 16px; /* panels, outer card wells */
+  --radius-2xl: 22px; /* swatch plates, hero cards */
+  --radius-3xl: 28px; /* device-style outer wells */
+  --radius-pill: 999px;
+}

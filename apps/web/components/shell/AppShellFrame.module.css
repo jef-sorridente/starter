@@ -1,0 +1,132 @@
+/* Breakpoint convention used across apps/web: "notebook" <= 1279px,
+   "mobile" <= 767px. Desktop (the design's native size) is the default,
+   unadorned ruleset; the two @media blocks below only adjust deltas. */
+
+.wrap {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+}
+
+.sidebar {
+  width: 200px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 14px 12px;
+  border-right: 1px solid var(--border-subtle);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  height: 64px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 28px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menuButton {
+  display: none;
+}
+
+.searchSlot {
+  display: contents;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  padding: 28px;
+  overflow: auto;
+}
+
+.overlay {
+  display: none;
+}
+
+@media (max-width: 1279px) {
+  .sidebar {
+    width: 176px;
+  }
+
+  .header {
+    padding: 0 20px;
+  }
+
+  .content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 100;
+    width: 240px;
+    background: var(--surface-app);
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .menuButton {
+    display: inline-flex;
+  }
+
+  .header {
+    padding: 0 14px;
+  }
+
+  .searchSlot {
+    display: none;
+  }
+
+  .content {
+    padding: 14px;
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    padding: 0;
+    border: none;
+    cursor: default;
+    background: var(--overlay-scrim);
+  }
+}

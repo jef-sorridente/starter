@@ -1,0 +1,149 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--overlay-scrim);
+  z-index: 50;
+}
+
+.modal {
+  width: 480px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.modalSubtitle {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.modalBody {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.errorText {
+  font-size: 13px;
+  color: var(--text-negative);
+}
+
+.modalActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.spacesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 900px;
+}
+
+.currentCard {
+  background: var(--lime-050);
+  border: 1px solid var(--lime-500);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.spaceTitle {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.spaceMeta {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.groupCard {
+  text-align: left;
+  cursor: pointer;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inviteBanner {
+  max-width: 900px;
+  margin-top: 4px;
+  padding: 14px;
+  background: var(--surface-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.inviteLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inviteText {
+  font-size: 13px;
+  color: var(--text-body);
+}
+
+@media (max-width: 1279px) {
+  .spacesGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .spacesGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .modal {
+    width: calc(100vw - 32px);
+  }
+
+  .inviteBanner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+}

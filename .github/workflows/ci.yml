@@ -1,0 +1,167 @@
+name: CI
+
+# Porteiro da `main`: nada entra sem passar por aqui (ligar a proteção
+# de branch exigindo estes jobs — ver docs/padroes/fluxo-de-trabalho.md).
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # prisma generate só lê o schema, não conecta — mas exige a variável.
+  DATABASE_URL: "postgresql://usuario:senha@localhost:5438/starter_test?schema=public"
+  TURBO_TELEMETRY_DISABLED: "1"
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  # Formatação, lint (TS + CSS), tipos, arquitetura, build e auditoria de
+  # dependências. Rápido e barato — é o primeiro sinal.
+  quality:
+    name: Qualidade (format, lint, tipos, arquitetura, build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - name: Formatação (Prettier)
+        run: pnpm format:check
+      - name: Lint (ESLint)
+        run: pnpm lint
+      - name: Lint de CSS (tokens do design system)
+        run: pnpm lint:css
+      - name: Tipos (tsc)
+        run: pnpm typecheck
+      - name: Arquitetura (dependency-cruiser)
+        run: pnpm deps:check
+      - name: Build de produção
+        run: pnpm build
+      - name: Vulnerabilidades em dependências de produção
+        run: pnpm audit --prod --audit-level high
+
+  unit:
+    name: Testes unitários + cobertura
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      # Cobertura com piso: o job falha se a cobertura cair abaixo do
+      # mínimo definido em cada pacote (só sobe, nunca desce).
+      - run: pnpm test:coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage
+          path: "**/coverage/**"
+          retention-days: 7
+
+  api-e2e:
+    name: API — integração (banco real)
+    runs-on: ubuntu-latest
+    services:
+      postgres-test:
+        image: postgres:16
+        env:
+          POSTGRES_USER: usuario
+          POSTGRES_PASSWORD: senha
+          POSTGRES_DB: starter_test
+        ports:
+          - 5438:5432
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm --filter @app/shared build
+      - run: pnpm test:e2e
+
+  web-e2e:
+    name: Ponta a ponta no navegador (Playwright)
+    runs-on: ubuntu-latest
+    services:
+      postgres-test:
+        image: postgres:16
+        env:
+          POSTGRES_USER: usuario
+          POSTGRES_PASSWORD: senha
+          POSTGRES_DB: starter_test
+        ports:
+          - 5438:5432
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      # O endereço da API entra no bundle do web em tempo de build.
+      - run: pnpm build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3101
+      - run: pnpm --filter e2e exec playwright install --with-deps chromium
+      - run: pnpm test:e2e:web
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-web
+          path: apps/e2e/playwright-report
+          retention-days: 7
+
+  design-system:
+    name: Design system (Storybook + acessibilidade + visual)
+    runs-on: ubuntu-latest
+    container:
+      # Mesma imagem usada pra gerar as referências visuais localmente
+      # (packages/ui/scripts/visual-docker.mjs) — screenshot só é
+      # comparável no mesmo sistema operacional e versão de navegador.
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @app/ui build:storybook
+      - name: Acessibilidade de cada story (axe)
+        run: pnpm --filter @app/ui test:a11y
+      # Liga sozinho quando as referências existirem no repositório
+      # (gerar com `pnpm --filter @app/ui test:visual:docker --update`).
+      - name: Regressão visual
+        if: hashFiles('packages/ui/visual/__screenshots__/**') != ''
+        run: pnpm --filter @app/ui test:visual
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-ui
+          path: packages/ui/playwright-report
+          retention-days: 7

@@ -1,0 +1,35 @@
+# Atualização de dependências toda semana, em PRs agrupados (um PR de
+# "patch/minor" por ecossistema em vez de 30 PRs soltos). Major vem
+# separado porque costuma exigir mudança de código. Todo PR passa pelo
+# CI inteiro antes de poder entrar.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      minor-e-patch:
+        update-types: [minor, patch]
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
+
+  - package-ecosystem: docker
+    directory: /apps/api
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore

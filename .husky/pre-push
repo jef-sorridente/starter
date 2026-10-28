@@ -1,0 +1,3 @@
+# Barreira barata antes de enviar: tipos e testes unitários. O resto
+# (e2e, build) é papel do CI.
+pnpm typecheck && pnpm test

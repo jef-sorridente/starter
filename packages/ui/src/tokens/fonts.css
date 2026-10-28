@@ -1,0 +1,10 @@
+/* Design system webfonts. No vendor font binaries were supplied with the source screens;
+   Poppins is the nearest Google Fonts match to the geometric sans in the mocks
+   (circular bowls, single-width 'o', low contrast). Flagged in readme.md.
+
+   Actually loaded via next/font/google in apps/web/app/layout.tsx (self-hosted,
+   no FOUC) — see the --font-poppins/--font-jetbrains-mono vars consumed by
+   typography.css's --font-sans/--font-mono. No @import here anymore: for a
+   consumer without Next.js (a future non-Next reader of this design system),
+   the CSS falls back to the plain family names in typography.css's stacks
+   instead of silently fetching from Google again. */

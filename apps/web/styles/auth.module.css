@@ -1,0 +1,124 @@
+/* Shared by the auth-split screens (login, registrar, recuperar-senha,
+   redefinir-senha, verificar-email, convites) — the sidebar headline/
+   footer and the form title/error/footer patterns repeated in each. */
+
+.sideHeadline {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 300;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.sideFeatureList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.sideFeatureItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.sideFooter {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.formTitle {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.formTitle.mt {
+  margin-top: 20px;
+}
+
+.formSubtitle {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.formSubtitle.mt {
+  margin-top: 20px;
+}
+
+.errorBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 12px;
+  background: var(--red-050);
+  border: 1px solid var(--red-500);
+  border-radius: 8px;
+}
+
+.errorBanner.neutral {
+  background: var(--surface-panel);
+  border: 1px solid var(--border-default);
+}
+
+.errorBannerText {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 20px 0 0;
+}
+
+.form.tight {
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.form.loose {
+  margin-top: 28px;
+}
+
+.formRowEnd {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 13px;
+}
+
+.footerText {
+  margin: 24px 0 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.footerText.tight {
+  margin-top: 20px;
+}
+
+.actionSpacer {
+  margin-top: 16px;
+}
+
+.inlineLink:hover {
+  color: var(--text-primary);
+}

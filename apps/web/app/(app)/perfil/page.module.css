@@ -1,0 +1,189 @@
+.title {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  margin-top: 22px;
+  min-width: 0;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card.danger {
+  border: 1px solid var(--red-500);
+}
+
+.cardBody {
+  padding: 16px;
+}
+
+.errorBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 12px;
+  background: var(--red-050);
+  border: 1px solid var(--red-500);
+  border-radius: 8px;
+}
+
+.errorText {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.formStack {
+  display: grid;
+  gap: 14px;
+}
+
+.formFooter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.successNote {
+  font-size: 13px;
+  color: var(--text-positive);
+}
+
+.hint {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.verifyRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.listBodyLoose {
+  padding: 16px;
+}
+
+.listBodyTight {
+  padding: 8px;
+}
+
+.emptyNote {
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+.emptyNotePadded {
+  font-size: 13px;
+  color: var(--text-faint);
+  padding: 8px;
+}
+
+.listStack {
+  display: flex;
+  flex-direction: column;
+}
+
+.listRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 8px;
+  border-radius: 8px;
+}
+
+.listRowGap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 8px;
+  border-radius: 8px;
+}
+
+.listRowMain {
+  min-width: 0;
+}
+
+.listRowTitle {
+  font-size: 14px;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.listRowTitlePlain {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.listRowMeta {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+.bodyText {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.deleteDescStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.deleteDescPara {
+  margin: 0;
+}
+
+.deleteErrorBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  background: var(--red-050);
+  border: 1px solid var(--red-500);
+  border-radius: 8px;
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

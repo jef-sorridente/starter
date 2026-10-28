@@ -1,0 +1,74 @@
+# Credenciais do Postgres vêm de variáveis de ambiente (com default só
+# pra dev local não exigir setup extra) — trocar POSTGRES_USER/
+# POSTGRES_PASSWORD no shell (ou num .env na raiz, lido automaticamente
+# pelo docker compose) antes de reaproveitar fora de uma máquina de dev.
+#
+# Portas no host fora do padrão (5437/5438) de propósito: a 5432 costuma
+# estar ocupada por um Postgres nativo, e outros projetos locais usam
+# 5433-5436. Cada projeto novo escolhe as suas no `pnpm rename-project`.
+services:
+  postgres:
+    image: postgres:16
+    container_name: starter-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-usuario}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-senha}
+      POSTGRES_DB: starter
+    ports:
+      - "5437:5432"
+    volumes:
+      - starter-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-usuario}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Banco isolado só pros testes (e2e da API e Playwright) — nunca o
+  # mesmo banco do dev, porque os testes truncam tudo entre cada caso.
+  # Sem volume: efêmero, cada `up` recomeça limpo.
+  postgres-test:
+    image: postgres:16
+    container_name: starter-db-test
+    # Sem religar sozinho: um container de teste esquecido ocupando a
+    # porta é exatamente o que faz um projeto rodar teste no banco do outro.
+    restart: "no"
+    profiles: ["test"]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-usuario}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-senha}
+      POSTGRES_DB: starter_test
+    ports:
+      - "5438:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-usuario}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Atrás de um profile: o dia a dia é `pnpm dev` local (hot reload) na
+  # porta 3001 — subir esse serviço junto colidiria com ela. Serve pra
+  # validar a imagem de produção: `docker compose --profile api up --build`.
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: starter-api
+    restart: unless-stopped
+    profiles: ["api"]
+    env_file:
+      - apps/api/.env
+    environment:
+      # Dentro da rede do compose o Postgres é o serviço `postgres` na
+      # porta interna 5432 — não o localhost:5437 do `pnpm dev`.
+      DATABASE_URL: postgresql://${POSTGRES_USER:-usuario}:${POSTGRES_PASSWORD:-senha}@postgres:5432/starter?schema=public
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  starter-db-data:

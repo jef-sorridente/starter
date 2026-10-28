@@ -1,0 +1,9 @@
+# LF no repositório em qualquer sistema operacional — sem isso, um
+# checkout no Windows com autocrlf vira CRLF e o Prettier/CI acusa o
+# arquivo inteiro como alterado.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff2 binary

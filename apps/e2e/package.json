@@ -1,0 +1,21 @@
+{
+  "name": "e2e",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Testes ponta a ponta no navegador (Playwright) contra API + web de verdade, com banco de teste isolado.",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@app/config": "workspace:*",
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^24.0.0",
+    "@types/pg": "^8.23.1",
+    "eslint": "^9.39.0",
+    "pg": "^8.23.1",
+    "typescript": "^5.5.4"
+  }
+}

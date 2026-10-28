@@ -1,0 +1,170 @@
+/* List-row patterns: the icon+label+meta row repeated inside cards
+   across accounts, categories, transactions, members, etc. */
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.row.noBorder {
+  border-bottom: none;
+}
+
+.row.padLg {
+  padding: 13px 14px;
+}
+
+.row.borderTopOnly {
+  border-bottom: none;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.rowGroup {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Funciona em <div> ou <button> — linha clicável deve ser <button>
+   (foco e Enter de graça), então o reset do estilo nativo mora aqui. */
+.clickableRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.clickableRow:hover {
+  background: var(--surface-hover);
+}
+
+.clickableRow:focus-visible {
+  outline: 2px solid var(--border-brand);
+  outline-offset: -2px;
+}
+
+.rowIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border-radius: 8px;
+  background: var(--surface-hover);
+}
+
+.rowIconLg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 8px;
+  background: var(--surface-hover);
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 999px;
+  background: var(--surface-hover);
+  color: var(--text-body);
+  font-size: 12px;
+}
+
+.rowMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.rowLabel {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.rowTitleLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rowTitle {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.rowMeta {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.subRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px 9px 54px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.subRowClickable {
+  cursor: pointer;
+}
+.subRowClickable:hover {
+  background: var(--surface-hover);
+}
+.subRowLabel {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  color: var(--text-body);
+}
+
+.emptyRow {
+  padding: 32px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+.loadMoreWrap {
+  padding: 14px;
+  text-align: center;
+}
+
+/* Breakpoints: notebook <= 1279px, mobile <= 767px (see AppShellFrame.module.css). */
+
+@media (max-width: 767px) {
+  .row,
+  .clickableRow {
+    flex-wrap: wrap;
+    row-gap: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .subRow {
+    padding-left: 40px;
+    padding-right: 10px;
+  }
+
+  .rowMain {
+    flex-basis: 100%;
+  }
+}

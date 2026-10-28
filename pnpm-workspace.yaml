@@ -1,0 +1,18 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Script de instalação (postinstall etc.) é bloqueado por padrão no
+# pnpm 10 — protege contra dependência comprometida que executa código
+# na máquina/CI durante o install. Só o que está `true` aqui roda;
+# `false` é recusa deliberada (mensagem de patrocínio ou binário que já
+# vem pré-compilado), listada pra silenciar o aviso e documentar.
+allowBuilds:
+  "@prisma/client": true
+  "@prisma/engines": true
+  prisma: true
+  esbuild: true
+  "@swc/core": true
+  "@nestjs/core": false
+  "@parcel/watcher": false
+  unrs-resolver: false

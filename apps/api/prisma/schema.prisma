@@ -1,0 +1,237 @@
+// ============================================================
+// Schema da base (starter)
+// ============================================================
+//
+// Regras que NÃO são impostas pelo Prisma e precisam ser garantidas
+// na camada de serviço da API (NestJS) — e, quando possível, também
+// por CHECK constraint numa migration SQL manual:
+//
+// 1. Dono único (XOR): em Note (e em todo model novo que possa ser
+//    pessoal OU de grupo), exatamente um entre userId/groupId deve
+//    estar preenchido. Validado no service e reforçado pela CHECK
+//    constraint "notes_owner_xor" na migration inicial.
+//
+// 2. Nenhuma resposta da API devolve Profile inteiro (passwordHash) —
+//    sempre `select` explícito ao incluir um Profile relacionado.
+//
+// Convenções: tabela em snake_case (@@map), campo em camelCase,
+// valor monetário sempre Decimal(12, 2), enum em português,
+// maiúsculo, sem acento.
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------------------------------------
+// Enums
+// ------------------------------------------------------------
+
+enum GroupRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum InviteStatus {
+  PENDENTE
+  ACEITO
+  RECUSADO
+  EXPIRADO
+}
+
+// Lista canônica em packages/shared (NOTIFICATION_TYPES) — manter as
+// duas em sincronia ao adicionar um tipo novo.
+enum NotificationType {
+  CONVITE_GRUPO
+}
+
+enum VerificationTokenType {
+  VERIFICACAO_EMAIL
+  REDEFINICAO_SENHA
+}
+
+// ------------------------------------------------------------
+// Fundação: perfis, sessões e grupos
+// ------------------------------------------------------------
+
+model Profile {
+  id              String    @id @default(uuid())
+  name            String
+  email           String    @unique
+  passwordHash    String    @map("password_hash")
+  emailVerifiedAt DateTime? @map("email_verified_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  groupMemberships   GroupMember[]
+  ownedGroups        Group[]                  @relation("GroupOwner")
+  sentInvites        GroupInvite[]            @relation("InviteSender")
+  notifications      Notification[]
+  notificationPrefs  NotificationPreference[]
+  refreshTokens      RefreshToken[]
+  verificationTokens VerificationToken[]
+  notes              Note[]                   @relation("NoteOwner")
+  notesCreated       Note[]                   @relation("NoteAuthor")
+
+  @@map("profiles")
+}
+
+// Refresh token opaco (não é JWT) — só o hash SHA-256 fica no banco,
+// nunca o valor bruto. Rotacionado a cada uso (POST /auth/refresh
+// revoga o token usado e emite um novo) pra limitar o estrago se um
+// token vazar: um reuso do token antigo depois da rotação é sinal de
+// comprometimento.
+model RefreshToken {
+  id        String    @id @default(uuid())
+  profileId String    @map("profile_id")
+  tokenHash String    @map("token_hash")
+  // Só pra identificar a sessão pro usuário em "Sessões ativas" (ex.:
+  // "Chrome no Windows") — nunca usado pra autenticação/validação.
+  userAgent String?   @map("user_agent")
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@map("refresh_tokens")
+}
+
+// Token de uso único por e-mail (verificação de cadastro ou
+// redefinição de senha) — só o hash SHA-256 fica no banco.
+model VerificationToken {
+  id        String                @id @default(uuid())
+  profileId String                @map("profile_id")
+  tokenHash String                @map("token_hash")
+  type      VerificationTokenType
+  expiresAt DateTime              @map("expires_at")
+  usedAt    DateTime?             @map("used_at")
+  createdAt DateTime              @default(now()) @map("created_at")
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, type])
+  @@map("verification_tokens")
+}
+
+model Group {
+  id        String   @id @default(uuid())
+  name      String
+  ownerId   String   @map("owner_id")
+  owner     Profile  @relation("GroupOwner", fields: [ownerId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+
+  members GroupMember[]
+  invites GroupInvite[]
+  notes   Note[]
+
+  @@map("groups")
+}
+
+model GroupMember {
+  id       String    @id @default(uuid())
+  groupId  String    @map("group_id")
+  group    Group     @relation(fields: [groupId], references: [id])
+  userId   String    @map("user_id")
+  user     Profile   @relation(fields: [userId], references: [id])
+  role     GroupRole @default(MEMBER)
+  joinedAt DateTime  @default(now()) @map("joined_at")
+
+  @@unique([groupId, userId])
+  @@map("group_members")
+}
+
+model GroupInvite {
+  id        String       @id @default(uuid())
+  groupId   String       @map("group_id")
+  group     Group        @relation(fields: [groupId], references: [id])
+  email     String
+  // Opcional + SetNull: se quem convidou excluir a própria conta, o
+  // convite continua existindo — só a autoria vira "usuário removido".
+  invitedBy String?      @map("invited_by")
+  inviter   Profile?     @relation("InviteSender", fields: [invitedBy], references: [id], onDelete: SetNull)
+  token     String       @unique
+  // OWNER nunca é um valor válido aqui — só existe um por grupo,
+  // fixado na criação (ver groupInviteRoleSchema em packages/shared).
+  role      GroupRole    @default(MEMBER)
+  status    InviteStatus @default(PENDENTE)
+  expiresAt DateTime     @map("expires_at")
+  createdAt DateTime     @default(now()) @map("created_at")
+
+  notifications Notification[]
+
+  @@map("group_invites")
+}
+
+// ------------------------------------------------------------
+// Notificações
+// ------------------------------------------------------------
+
+model Notification {
+  id     String  @id @default(uuid())
+  userId String  @map("user_id")
+  user   Profile @relation(fields: [userId], references: [id])
+
+  inviteId String?      @map("invite_id")
+  invite   GroupInvite? @relation(fields: [inviteId], references: [id], onDelete: SetNull)
+
+  type      NotificationType
+  message   String
+  readAt    DateTime?        @map("read_at")
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  @@index([userId, createdAt])
+  @@map("notifications")
+}
+
+model NotificationPreference {
+  id           String           @id @default(uuid())
+  userId       String           @map("user_id")
+  user         Profile          @relation(fields: [userId], references: [id])
+  type         NotificationType
+  pushEnabled  Boolean          @default(true) @map("push_enabled")
+  emailEnabled Boolean          @default(true) @map("email_enabled")
+
+  @@unique([userId, type])
+  @@map("notification_preferences")
+}
+
+// ------------------------------------------------------------
+// Módulo de exemplo — anotações
+// ------------------------------------------------------------
+//
+// Existe pra servir de referência do padrão completo de um módulo de
+// domínio (schema zod em shared → service + spec → controller → e2e de
+// autorização → tela). Num projeto novo, copie a estrutura pro seu
+// primeiro módulo de verdade e apague este (ver docs/novo-projeto.md).
+//
+// userId XOR groupId (regra 1 no topo do arquivo).
+model Note {
+  id        String   @id @default(uuid())
+  userId    String?  @map("user_id")
+  // Restrict (não o SetNull padrão de relação opcional): zerar o dono
+  // quebraria o XOR. Excluir perfil/grupo apaga as anotações antes, de
+  // forma explícita (ProfilesService.deleteAccount / GroupsService.delete).
+  user      Profile? @relation("NoteOwner", fields: [userId], references: [id], onDelete: Restrict)
+  groupId   String?  @map("group_id")
+  group     Group?   @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  // Autoria (quem escreveu), separada do dono — numa anotação de grupo
+  // o dono é o grupo. SetNull: o histórico do grupo sobrevive à
+  // exclusão da conta de quem escreveu.
+  createdBy String?  @map("created_by")
+  author    Profile? @relation("NoteAuthor", fields: [createdBy], references: [id], onDelete: SetNull)
+  title     String
+  content   String   @default("")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId, createdAt])
+  @@index([groupId, createdAt])
+  @@map("notes")
+}

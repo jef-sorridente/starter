@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(pnpm check)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm lint:css)",
+      "Bash(pnpm typecheck)",
+      "Bash(pnpm test)",
+      "Bash(pnpm test:coverage)",
+      "Bash(pnpm test:e2e)",
+      "Bash(pnpm test:e2e:web)",
+      "Bash(pnpm format)",
+      "Bash(pnpm format:check)",
+      "Bash(pnpm deps:check)",
+      "Bash(pnpm build)",
+      "Bash(pnpm --filter * run lint)",
+      "Bash(pnpm --filter * run typecheck)",
+      "Bash(pnpm --filter * run test)",
+      "Bash(pnpm --filter * run test:*)",
+      "Bash(pnpm --filter * exec prisma migrate dev --create-only *)",
+      "Bash(pnpm db:generate)",
+      "Bash(pnpm db:test:up)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)"
+    ],
+    "deny": ["Read(./**/.env)", "Read(./**/.env.local)", "Bash(git push --force *)"]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/after-edit.mjs\"",
+            "timeout": 90
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+/* Structural containers: headers, toolbars, grids — reused across
+   pages instead of repeating the same flex/grid inline style. */
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.pageHeaderEnd {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbar.tight {
+  gap: 6px;
+}
+
+.actionsEnd {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 8px;
+}
+
+.twoColGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  min-width: 0;
+}
+
+.colStack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.formGrid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.alignRight {
+  text-align: right;
+}
+
+.tagRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tagRowMb {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.clickableTag {
+  cursor: pointer;
+}
+
+/* Breakpoints: notebook <= 1279px, mobile <= 767px (see AppShellFrame.module.css). */
+
+@media (max-width: 1279px) {
+  .statGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .twoColGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .pageHeader,
+  .pageHeaderEnd {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .actionsEnd {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .toolbar {
+    flex-wrap: wrap;
+  }
+
+  .buttonRow {
+    flex-wrap: wrap;
+  }
+
+  .twoColGrid,
+  .statGrid,
+  .formGrid2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .colStack {
+    gap: 12px;
+  }
+}

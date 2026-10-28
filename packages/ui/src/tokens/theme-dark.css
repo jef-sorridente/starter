@@ -1,0 +1,73 @@
+/* Tema escuro — override das variáveis de colors.css (paleta clara base).
+   Aplicado globalmente por `data-theme="dark"` no <html> (ver
+   apps/web/app/layout.tsx). Produto claro: remova o atributo. Produto com
+   alternância claro/escuro: troque o atributo em runtime — todo componente
+   lê só os tokens, então nada mais muda. Token novo entra nos dois arquivos. */
+[data-theme="dark"] {
+  --surface-app: #050b06;
+  --surface-card: #122416;
+  --surface-panel: #0d1b0f;
+  --surface-field: #0d1b0f;
+  --surface-hover: #1a3220;
+  /* Cores dos skeletons de carregamento. */
+  --skeleton-strong: #1a3220;
+  --skeleton-soft: #142a19;
+  --skeleton-divider: #1a2e1e;
+  --surface-sunken: #0b170d;
+  --surface-inverse: #e8f1e6;
+  --overlay-scrim: rgba(5, 11, 6, 0.55);
+
+  --border-subtle: #203a26;
+  --border-default: #2a4a32;
+  --border-strong: #3a6043;
+  --border-field: #2a4a32;
+  --border-brand: #a1e86d;
+
+  --text-primary: #f1f7ef;
+  --text-body: #dce8da;
+  --text-secondary: #a7bfa9;
+  --text-muted: #93ac95;
+  /* #8ba48c (era #7e967f): mínimo pra passar WCAG AA (4.5:1) em texto
+     pequeno sobre a superfície mais clara de texto (--surface-hover).
+     Achado pelo teste de acessibilidade das telas (apps/e2e). */
+  --text-faint: #8ba48c;
+  --text-positive: #8cd457;
+  --text-negative: #ff6b79;
+  --text-warning: #f2a618;
+  --text-on-dark: #f1f7ef;
+
+  --action-primary-bg: #a1e86d;
+  --action-primary-bg-hover: #bdec98;
+  --action-primary-fg: #08130a;
+  --action-secondary-bg: #122416;
+  --action-secondary-fg: #f1f7ef;
+  --action-danger-fg: #ff6b79;
+
+  --lime-050: #12241a;
+  --lime-100: #1c3a20;
+  --lime-200: #2a5430;
+  --lime-500: #a1e86d;
+  --lime-600: #a1e86d;
+  --lime-800: #a1e86d;
+
+  --gray-075: #1a3220;
+  --gray-800: #23412b;
+
+  --chart-track: #23412b;
+  --chart-bar: #2f5238;
+  --chart-bar-active: #a1e86d;
+
+  --blue-050: #0e2233;
+  --blue-500: #7bc0ff;
+  --red-050: #3a1418;
+  --red-500: #ff6b79;
+  --amber-050: #3a2a10;
+  --green-050: #12301a;
+  --green-500: #8cd457;
+
+  --white: #122416;
+  --ink-950: #08130a;
+
+  background: var(--surface-app);
+  color: var(--text-on-dark);
+}

@@ -1,0 +1,139 @@
+/* Card/panel containers: the "surface-card with border+radius" shell
+   used for lists, forms and info boxes throughout the app. */
+
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cardScroll {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: auto;
+}
+
+.listPanel {
+  flex: 1;
+  min-height: 0;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.listScroll {
+  overflow: auto;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.cardHeaderLabel {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.panelHeaderStatic {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.panelBody {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.panelBody.gapLg {
+  gap: 12px;
+}
+
+.panelBodyText {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.formCard {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.formShell {
+  max-width: 700px;
+}
+
+.formShellNarrow {
+  max-width: 640px;
+}
+
+.formActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.dangerZone {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.dangerZoneCaption {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.footerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.footerNote {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* Breakpoints: notebook <= 1279px, mobile <= 767px (see AppShellFrame.module.css). */
+
+@media (max-width: 767px) {
+  .formActions {
+    flex-wrap: wrap;
+  }
+
+  .formCard,
+  .panelBody {
+    padding: 12px;
+  }
+
+  .cardHeader,
+  .panelHeaderStatic,
+  .footerRow {
+    padding: 10px 12px;
+  }
+}
