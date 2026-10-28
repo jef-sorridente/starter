@@ -4,7 +4,7 @@
 # (workspace), então o contexto de build é o repo inteiro.
 # --filter=api... instala a API e suas dependências de workspace sem
 # instalar o web, que não entra na imagem.
-FROM node:24-alpine AS base
+FROM node:26-alpine AS base
 # Prisma Query Engine em Alpine (musl) precisa de OpenSSL — sem isso
 # a API falha ao subir com erro de engine/libssl.
 RUN apk add --no-cache openssl
