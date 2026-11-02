@@ -12,7 +12,7 @@
     "@app/config": "workspace:*",
     "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.64.1",
-    "@types/node": "^24.0.0",
+    "@types/node": "^26.6.6",
     "@types/pg": "^8.23.1",
     "eslint": "^9.39.0",
     "pg": "^8.23.1",
