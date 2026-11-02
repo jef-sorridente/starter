@@ -116,7 +116,7 @@ importers:
         version: link:../../packages/config
       '@nestjs/cli':
         specifier: ^10.4.0
-        version: 10.4.9(postcss@8.5.32)
+        version: 10.4.9
       '@nestjs/testing':
         specifier: ^10.4.22
         version: 10.4.22(@nestjs/common@10.4.22(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.22)(@nestjs/platform-express@10.4.22)
@@ -257,8 +257,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1(eslint@9.39.5(jiti@2.7.0))
       '@eslint/js':
-        specifier: ^9.39.0
-        version: 9.39.5
+        specifier: ^10.0.1
+        version: 10.0.1(eslint@9.39.5(jiti@2.7.0))
       '@next/eslint-plugin-next':
         specifier: 15.5.28
         version: 15.5.28
@@ -985,6 +985,15 @@ packages:
   '@eslint/eslintrc@3.3.7':
     resolution: {integrity: sha512-F42g89Qd5oAWtp0k0nnSrjziAKza7w8SVT4mStc18LZMaRb4J1HQAHLCalEtDCxrTuksx7NU9qsmeLwpOfPqWw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@eslint/js@10.0.1':
+    resolution: {integrity: sha512-zeR9k5pd4gxjZ0abRoIaxdc7I3nDktoXZk2qOv9gCNWx3mVwEn32VRhyLaRsDiJjTs0xq/T8mfPtyuXu7GWBcA==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
+    peerDependencies:
+      eslint: ^10.0.0
+    peerDependenciesMeta:
+      eslint:
+        optional: true
 
   '@eslint/js@9.39.5':
     resolution: {integrity: sha512-QywQuszQh77pIXCsq998c8hbhSTI/azTty1Z6N53dmAudKHhy573j3yvRLsX2BSp8YpLtoCEG8E9DJe+8zUh4A==}
@@ -6924,6 +6933,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@eslint/js@10.0.1(eslint@9.39.5(jiti@2.7.0))':
+    optionalDependencies:
+      eslint: 9.39.5(jiti@2.7.0)
+
   '@eslint/js@9.39.5': {}
 
   '@eslint/object-schema@2.1.7': {}
@@ -7331,7 +7344,7 @@ snapshots:
       '@tybys/wasm-util': 0.10.4
     optional: true
 
-  '@nestjs/cli@10.4.9(postcss@8.5.32)':
+  '@nestjs/cli@10.4.9':
     dependencies:
       '@angular-devkit/core': 17.3.11(chokidar@3.6.0)
       '@angular-devkit/schematics': 17.3.11(chokidar@3.6.0)
@@ -7341,7 +7354,7 @@ snapshots:
       chokidar: 3.6.0
       cli-table3: 0.6.5
       commander: 4.1.1
-      fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.7.2)(webpack@5.97.1(postcss@8.5.32))
+      fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.7.2)(webpack@5.97.1)
       glob: 10.4.5
       inquirer: 8.2.6
       node-emoji: 1.11.0
@@ -7350,7 +7363,7 @@ snapshots:
       tsconfig-paths: 4.2.0
       tsconfig-paths-webpack-plugin: 4.2.0
       typescript: 5.7.2
-      webpack: 5.97.1(postcss@8.5.32)
+      webpack: 5.97.1
       webpack-node-externals: 3.0.0
     transitivePeerDependencies:
       - '@minify-html/node'
@@ -9698,7 +9711,7 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  fork-ts-checker-webpack-plugin@9.0.2(typescript@5.7.2)(webpack@5.97.1(postcss@8.5.32)):
+  fork-ts-checker-webpack-plugin@9.0.2(typescript@5.7.2)(webpack@5.97.1):
     dependencies:
       '@babel/code-frame': 7.29.7
       chalk: 4.1.2
@@ -9713,7 +9726,7 @@ snapshots:
       semver: 7.8.5
       tapable: 2.3.3
       typescript: 5.7.2
-      webpack: 5.97.1(postcss@8.5.32)
+      webpack: 5.97.1
 
   form-data@4.0.6:
     dependencies:
@@ -11700,14 +11713,14 @@ snapshots:
       ajv: 6.15.0
       ajv-keywords: 3.5.2(ajv@6.15.0)
 
-  schema-utils@4.8.1(webpack@5.97.1(postcss@8.5.32)):
+  schema-utils@4.8.1(webpack@5.97.1):
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
       ajv-formats: 3.0.1(ajv@8.20.0)
       ajv-keywords: 5.1.0(ajv@8.20.0)
     optionalDependencies:
-      webpack: 5.97.1(postcss@8.5.32)
+      webpack: 5.97.1
 
   secure-compare@3.0.1: {}
 
@@ -12143,15 +12156,13 @@ snapshots:
 
   tapable@2.3.3: {}
 
-  terser-webpack-plugin@5.6.1(postcss@8.5.32)(webpack@5.97.1(postcss@8.5.32)):
+  terser-webpack-plugin@5.6.1(webpack@5.97.1):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
-      schema-utils: 4.8.1(webpack@5.97.1(postcss@8.5.32))
+      schema-utils: 4.8.1(webpack@5.97.1)
       terser: 5.51.2
-      webpack: 5.97.1(postcss@8.5.32)
-    optionalDependencies:
-      postcss: 8.5.32
+      webpack: 5.97.1
 
   terser@5.51.2:
     dependencies:
@@ -12491,7 +12502,7 @@ snapshots:
 
   webpack-virtual-modules@0.6.2: {}
 
-  webpack@5.97.1(postcss@8.5.32):
+  webpack@5.97.1:
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.9
@@ -12513,7 +12524,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.3.3
-      terser-webpack-plugin: 5.6.1(postcss@8.5.32)(webpack@5.97.1(postcss@8.5.32))
+      terser-webpack-plugin: 5.6.1(webpack@5.97.1)
       watchpack: 2.6.3
       webpack-sources: 3.6.0
     transitivePeerDependencies:
