@@ -116,7 +116,7 @@ importers:
         version: link:../../packages/config
       '@nestjs/cli':
         specifier: ^10.4.0
-        version: 10.4.9(postcss@8.5.32)
+        version: 10.4.9
       '@nestjs/testing':
         specifier: ^10.4.22
         version: 10.4.22(@nestjs/common@10.4.22(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.22)(@nestjs/platform-express@10.4.22)
@@ -318,8 +318,8 @@ importers:
         specifier: ^13.2.0
         version: 13.5.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       lucide-react:
-        specifier: ^0.417.0
-        version: 0.417.0(react@19.3.1)
+        specifier: ^1.65.0
+        version: 1.65.0(@types/react@19.3.0)(react@19.3.1)
       react-number-format:
         specifier: ^5.4.5
         version: 5.4.5(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -4622,10 +4622,14 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@0.417.0:
-    resolution: {integrity: sha512-F/MDUHDter8YMZ7JKQpW/5/+v38tdaoShKX3e+opYsqfCnaHwn+5zz3+lBrMDFMNtSsvxtNpchLIaMpEfsi/4w==}
+  lucide-react@1.65.0:
+    resolution: {integrity: sha512-roSdtzudEY39i2hn5LLjA8toYfhF2z4S10WSqZF4ubXpHlOmNTvaxMxZLdJfQDi6pEifQWX+cRmYihKSsvAxfA==}
     peerDependencies:
+      '@types/react': '*'
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -7331,7 +7335,7 @@ snapshots:
       '@tybys/wasm-util': 0.10.4
     optional: true
 
-  '@nestjs/cli@10.4.9(postcss@8.5.32)':
+  '@nestjs/cli@10.4.9':
     dependencies:
       '@angular-devkit/core': 17.3.11(chokidar@3.6.0)
       '@angular-devkit/schematics': 17.3.11(chokidar@3.6.0)
@@ -7341,7 +7345,7 @@ snapshots:
       chokidar: 3.6.0
       cli-table3: 0.6.5
       commander: 4.1.1
-      fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.7.2)(webpack@5.97.1(postcss@8.5.32))
+      fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.7.2)(webpack@5.97.1)
       glob: 10.4.5
       inquirer: 8.2.6
       node-emoji: 1.11.0
@@ -7350,7 +7354,7 @@ snapshots:
       tsconfig-paths: 4.2.0
       tsconfig-paths-webpack-plugin: 4.2.0
       typescript: 5.7.2
-      webpack: 5.97.1(postcss@8.5.32)
+      webpack: 5.97.1
       webpack-node-externals: 3.0.0
     transitivePeerDependencies:
       - '@minify-html/node'
@@ -9698,7 +9702,7 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  fork-ts-checker-webpack-plugin@9.0.2(typescript@5.7.2)(webpack@5.97.1(postcss@8.5.32)):
+  fork-ts-checker-webpack-plugin@9.0.2(typescript@5.7.2)(webpack@5.97.1):
     dependencies:
       '@babel/code-frame': 7.29.7
       chalk: 4.1.2
@@ -9713,7 +9717,7 @@ snapshots:
       semver: 7.8.5
       tapable: 2.3.3
       typescript: 5.7.2
-      webpack: 5.97.1(postcss@8.5.32)
+      webpack: 5.97.1
 
   form-data@4.0.6:
     dependencies:
@@ -10869,9 +10873,11 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@0.417.0(react@19.3.1):
+  lucide-react@1.65.0(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       react: 19.3.1
+    optionalDependencies:
+      '@types/react': 19.3.0
 
   lz-string@1.5.0: {}
 
@@ -11700,14 +11706,14 @@ snapshots:
       ajv: 6.15.0
       ajv-keywords: 3.5.2(ajv@6.15.0)
 
-  schema-utils@4.8.1(webpack@5.97.1(postcss@8.5.32)):
+  schema-utils@4.8.1(webpack@5.97.1):
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
       ajv-formats: 3.0.1(ajv@8.20.0)
       ajv-keywords: 5.1.0(ajv@8.20.0)
     optionalDependencies:
-      webpack: 5.97.1(postcss@8.5.32)
+      webpack: 5.97.1
 
   secure-compare@3.0.1: {}
 
@@ -12143,15 +12149,13 @@ snapshots:
 
   tapable@2.3.3: {}
 
-  terser-webpack-plugin@5.6.1(postcss@8.5.32)(webpack@5.97.1(postcss@8.5.32)):
+  terser-webpack-plugin@5.6.1(webpack@5.97.1):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
-      schema-utils: 4.8.1(webpack@5.97.1(postcss@8.5.32))
+      schema-utils: 4.8.1(webpack@5.97.1)
       terser: 5.51.2
-      webpack: 5.97.1(postcss@8.5.32)
-    optionalDependencies:
-      postcss: 8.5.32
+      webpack: 5.97.1
 
   terser@5.51.2:
     dependencies:
@@ -12491,7 +12495,7 @@ snapshots:
 
   webpack-virtual-modules@0.6.2: {}
 
-  webpack@5.97.1(postcss@8.5.32):
+  webpack@5.97.1:
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.9
@@ -12513,7 +12517,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.3.3
-      terser-webpack-plugin: 5.6.1(postcss@8.5.32)(webpack@5.97.1(postcss@8.5.32))
+      terser-webpack-plugin: 5.6.1(webpack@5.97.1)
       watchpack: 2.6.3
       webpack-sources: 3.6.0
     transitivePeerDependencies:
