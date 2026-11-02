@@ -17,7 +17,7 @@
     "@app/ui": "workspace:*",
     "@tanstack/react-query": "^5.102.8",
     "framer-motion": "^13.2.0",
-    "next": "^15.5.28",
+    "next": "^16.4.3",
     "react": "^19.1.10",
     "react-dom": "^19.1.10"
   },
