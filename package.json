@@ -34,7 +34,7 @@
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
     "cross-env": "^10.1.0",
-    "dependency-cruiser": "^18.7.0",
+    "dependency-cruiser": "^18.7.2",
     "eslint": "^9.39.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
